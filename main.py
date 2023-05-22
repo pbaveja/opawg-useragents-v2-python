@@ -23,7 +23,7 @@ def determine_user_agent_attributes(user_agent, referer_value = None):
     # Search for a match in the bots file
     bot_entry = None
     for entry in bots_data["entries"]:
-        if "pattern" in entry and any(re.search(pattern, user_agent) for pattern in entry["pattern"]):
+        if "pattern" in entry and re.search(entry['pattern'], user_agent):
             bot_entry = entry
             break
 
@@ -31,7 +31,7 @@ def determine_user_agent_attributes(user_agent, referer_value = None):
     app_entry = None
     if not bot_entry:
         for entry in apps_data["entries"]:
-            if "pattern" in entry and any(re.search(pattern, user_agent) for pattern in entry["pattern"]):
+            if "pattern" in entry and re.search(entry['pattern'], user_agent):
                 app_entry = entry
                 break
 
@@ -39,7 +39,7 @@ def determine_user_agent_attributes(user_agent, referer_value = None):
     library_entry = None
     if not bot_entry and not app_entry:
         for entry in libraries_data["entries"]:
-            if "pattern" in entry and any(re.search(pattern, user_agent) for pattern in entry["pattern"]):
+            if "pattern" in entry and re.search(entry['pattern'], user_agent):
                 library_entry = entry
                 break
 
@@ -79,7 +79,7 @@ def determine_user_agent_attributes(user_agent, referer_value = None):
 
         # Search for a device match
         for entry in devices_data["entries"]:
-            if "pattern" in entry and any(re.search(pattern, user_agent) for pattern in entry["pattern"]):
+            if "pattern" in entry and re.search(entry['pattern'], user_agent):
                 device = entry["name"]
                 device_type = entry.get("category")
                 break
@@ -96,7 +96,7 @@ def determine_user_agent_attributes(user_agent, referer_value = None):
 
             # Search for a match in the referrers file
             for entry in referrers_data["entries"]:
-                if "pattern" in entry and any(re.search(pattern, referer_header) for pattern in entry["pattern"]):
+                if "pattern" in entry and re.search(entry['pattern'], referer_header):
                     referrer_category = entry.get("category")
                     if referrer_category == 'app' or referrer_category == 'host':
                         app = entry["name"]
